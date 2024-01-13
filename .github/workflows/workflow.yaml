@@ -1,6 +1,10 @@
 name: CI Build, Test, Deploy
 
-on: push
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build:
@@ -25,47 +29,6 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Upload venv
-        uses: actions/upload-artifact@v3
-        with:
-          name: venv
-          path: .venv
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download venv
-        uses: actions/download-artifact@v3
-        with:
-          name: venv
-
       - name: Test with pytest
         run: |
-          pipenv run pytest
-
-  # deploy:
-  #   runs-on: ubuntu-latest
-
-  #   needs: test
-
-  #   steps:
-  #     - name: Check out the code
-  #       uses: actions/checkout@v3
-
-  #     - name: Set up Python 3.11
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: 3.11
-
-  #     - name: install pipenv
-  #       run: |
-  #         pip install pipenv
-
-  #     - name: Install dependencies
-  #       run: |
-  #         pipenv install --dev
-
-  #     - name: create requirements
-  #       run: |
-  #         pipenv requirements > requirements.txt
+          pytest
