@@ -7,6 +7,7 @@ class DatabaseConnection:
 
     def __init__(self, test_mode=False):
         self.test_mode = test_mode
+        self.connect()
 
     def connect(self):
         try:

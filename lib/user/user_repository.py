@@ -1,6 +1,3 @@
-from lib.user.user import User
-
-
 class UserRespository:
     def __init__(self, connection):
         self._connection = connection

@@ -1,7 +1,6 @@
 import pytest
 from playwright.sync_api import sync_playwright
 from app import app
-from seeds.setup import *
 from lib.db_connection import DatabaseConnection
 
 
