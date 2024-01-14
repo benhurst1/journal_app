@@ -17,18 +17,15 @@ def post_index():
     return render_template("index.html")
 
 
-@app.route("/createpost", methods=["GET"])
-def get_create_post():
-    return render_template("createpost.html")
-
-
-@app.route("/createpost", methods=["POST"])
-def post_create_post():
+@app.route("/createpost", methods=["GET", "POST"])
+def create_post():
+    if request.method == "POST":
+        pass
     return render_template("createpost.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
-def get_signup():
+def signup():
     if request.method == "POST":
         username = request.form.get("username")
         email = request.form.get("email")

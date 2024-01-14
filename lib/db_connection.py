@@ -2,20 +2,26 @@ import psycopg2
 
 
 class DatabaseConnection:
-    DATABASE_NAME = "journal_app"
+    DEV_DATABASE_NAME = "journal_app"
+    # TEST_DATABASE_NAME = 'journal_app_test'
 
-    def __init__(self):
-        self.connection = self.connect()
+    def __init__(self, test_mode=False):
+        self.test_mode = test_mode
 
     def connect(self):
         try:
-            return psycopg2.connect(
-                f"postgresql://localhost/journal_app"
+            self.connection = psycopg2.connect(
+                f"postgresql://localhost/{self.DEV_DATABASE_NAME}"
             )
         except psycopg2.OperationalError:
             raise Exception(f"Could not connect to {self.DATABASE_NAME}")
 
-    def execute(self, query, params):
+    def execute(self, query, params=[]):
         with self.connection.cursor() as cur:
             cur.execute(query, params)
             self.connection.commit()
+
+    # def _database_name(self):
+    #     if self.test_mode == True:
+    #         return self.TEST_DATABASE_NAME
+    #     return self.DEV_DATABASE_NAME
