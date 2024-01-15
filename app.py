@@ -1,13 +1,14 @@
-from flask import Flask, request, render_template, g, session, redirect
+from flask import Flask, request, render_template, session, redirect
 from lib.db_connection import DatabaseConnection
 from lib.user.user_repository import UserRespository
-from lib.user.user_controller import UserController
+from lib.user.user import User
 from lib.post.post_controller import PostController
 from lib.post.post_repository import PostRepository
 import psycopg2
-import datetime
+import datetime, secrets
 
 app = Flask(__name__)
+app.secret_key = secrets.token_urlsafe(32)
 
 
 @app.route("/", methods=["GET"])
@@ -15,13 +16,17 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/posts", methods=["GET","POST"])
+@app.route("/posts", methods=["GET", "POST"])
 def posts():
+    if "user_id" in session:
+        return redirect("/", 302)
     return render_template("index.html")
 
 
 @app.route("/createpost", methods=["GET", "POST"])
 def create_post():
+    if "user_id" in session:
+        return redirect("/", 302)
     if request.method == "POST":
         title = request.form.get("post-title")
         body = request.form.get("post-body")
@@ -35,22 +40,27 @@ def create_post():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+    if "user_id" in session:
+        return redirect("/", 302)
     if request.method == "POST":
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
-        user = UserController().create_user_object(username, email, password)
+        user = User(username, password, email)
         UserRespository(DatabaseConnection()).add_user(user)
     return render_template("signup.html")
 
 
-@app.route("/login", methods=["GET"])
+@app.route("/login", methods=["GET", "POST"])
 def get_login():
-    return render_template("login.html")
-
-
-@app.route("/login", methods=["POST"])
-def post_login():
+    if "user_id" in session:
+        return redirect("/", 302)
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        user = User(username, password)
+        user_id = UserRespository(DatabaseConnection()).check_user(user)
+        session["user_id"] = user_id
     return render_template("login.html")
 
 

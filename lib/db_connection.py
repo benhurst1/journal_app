@@ -20,7 +20,12 @@ class DatabaseConnection:
     def execute(self, query, params=[]):
         with self.connection.cursor() as cur:
             cur.execute(query, params)
+            if cur.description is not None:
+                result = cur.fetchall()
+            else:
+                result = None
             self.connection.commit()
+            return result
 
     # def _database_name(self):
     #     if self.test_mode == True:
