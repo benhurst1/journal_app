@@ -20,3 +20,14 @@ class PostRepository:
             """SELECT * FROM posts WHERE user_id = %s""", [user_id]
         )
         return posts
+
+    def get_published(self):
+        posts = self._connection.execute(
+            """SELECT * FROM posts WHERE published = True"""
+        )
+        return posts
+
+    def publish(self, post_id):
+        self._connection.execute(
+            """UPDATE posts SET published = True WHERE id = %s""", [post_id]
+        )

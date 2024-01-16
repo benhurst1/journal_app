@@ -13,18 +13,23 @@ app.secret_key = secrets.token_urlsafe(32)
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html", session=session)
+    posts = []
+    for row in PostRepository(DatabaseConnection()).get_published():
+        post = Post(row[1], row[2], row[3], row[4], row[5], row[6], row[0])
+        posts.append(post)
+    return render_template("index.html", session=session, posts=posts)
 
 
 @app.route("/posts", methods=["GET", "POST"])
 def posts():
     if "user_id" not in session:
         return redirect("/", 302)
+    if request.method == "POST":
+        pass
     posts = []
     for row in PostRepository(DatabaseConnection()).get_posts(session["user_id"]):
-        post = Post(row[1], row[2], row[3], row[4], row[5], row[6])
+        post = Post(row[1], row[2], row[3], row[4], row[5], row[6], row[0])
         posts.append(post)
-        print(post.title)
     return render_template("posts.html", posts=posts)
 
 
@@ -36,9 +41,21 @@ def create_post():
         title = request.form.get("post-title")
         body = request.form.get("post-body")
         created_at = str(datetime.datetime.now())
-        post = Post(session["user_id"], title, body, created_at, created_at, False)
+        post = Post(
+            session["user_id"], title, body, created_at, created_at, False, None
+        )
         PostRepository(DatabaseConnection()).add_post(post)
     return render_template("createpost.html")
+
+
+@app.route("/publish", methods=["GET", "POST"])
+def publish():
+    if "user_id" not in session:
+        return redirect("/", 302)
+    if request.method == "POST":
+        post_id = request.form.get("post-id")
+        PostRepository(DatabaseConnection()).publish(post_id)
+    return redirect("/")
 
 
 @app.route("/signup", methods=["GET", "POST"])
