@@ -13,19 +13,20 @@ app.secret_key = secrets.token_urlsafe(32)
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    print(session)
+    return render_template("index.html", session=session)
 
 
 @app.route("/posts", methods=["GET", "POST"])
 def posts():
-    if "user_id" in session:
+    if "user_id" not in session:
         return redirect("/", 302)
     return render_template("index.html")
 
 
 @app.route("/createpost", methods=["GET", "POST"])
 def create_post():
-    if "user_id" in session:
+    if "user_id" not in session:
         return redirect("/", 302)
     if request.method == "POST":
         title = request.form.get("post-title")
@@ -52,7 +53,7 @@ def signup():
 
 
 @app.route("/login", methods=["GET", "POST"])
-def get_login():
+def login():
     if "user_id" in session:
         return redirect("/", 302)
     if request.method == "POST":
@@ -60,8 +61,16 @@ def get_login():
         password = request.form.get("password")
         user = User(username, password)
         user_id = UserRespository(DatabaseConnection()).check_user(user)
-        session["user_id"] = user_id
+        if user_id != None:
+            session["user_id"] = user_id
+            return redirect("/")
     return render_template("login.html")
+
+
+@app.route("/logout", methods=["GET", "POST"])
+def logout():
+    session.pop("user_id", default=None)
+    return redirect("/")
 
 
 if __name__ == "__main__":

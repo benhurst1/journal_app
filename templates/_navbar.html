@@ -1,0 +1,10 @@
+<nav>
+  <a href=""><button>Home</button></a>
+  {% if 'user_id' in session %}
+  <a href="posts"><button>Posts</button></a>
+  <a href="logout"><button>Log out</button></a>
+  {% else %}
+  <a href="signup"><button>Sign up</button></a>
+  <a href="login"><button>Log in</button></a>
+  {% endif %}
+</nav>
