@@ -17,13 +17,14 @@ class PostRepository:
 
     def get_posts(self, user_id):
         posts = self._connection.execute(
-            """SELECT * FROM posts WHERE user_id = %s""", [user_id]
+            """SELECT * FROM posts WHERE user_id = %s ORDER BY created_at DESC""",
+            [user_id],
         )
         return posts
 
     def get_published(self):
         posts = self._connection.execute(
-            """SELECT * FROM posts WHERE published = True"""
+            """SELECT * FROM posts WHERE published = True ORDER BY created_at DESC"""
         )
         return posts
 

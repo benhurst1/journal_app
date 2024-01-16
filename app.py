@@ -53,7 +53,7 @@ def publish():
     if request.method == "POST":
         post_id = request.form.get("post-id")
         PostRepository(DatabaseConnection()).publish(post_id)
-    return redirect("/")
+    return redirect("/posts")
 
 
 @app.route("/signup", methods=["GET", "POST"])
