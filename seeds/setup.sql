@@ -13,7 +13,8 @@ CREATE TABLE "posts" (
   "title" varchar,
   "body" text,
   "created_at" timestamp,
-  "last_edited" timestamp
+  "last_edited" timestamp,
+  "published" BOOLEAN
 );
 
 ALTER TABLE "posts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");

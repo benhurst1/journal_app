@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, session, redirect
 from lib.db_connection import DatabaseConnection
 from lib.user.user_repository import UserRespository
 from lib.user.user import User
-from lib.post.post_controller import PostController
+from lib.post.post import Post
 from lib.post.post_repository import PostRepository
 import psycopg2
 import datetime, secrets
@@ -13,7 +13,6 @@ app.secret_key = secrets.token_urlsafe(32)
 
 @app.route("/", methods=["GET"])
 def index():
-    print(session)
     return render_template("index.html", session=session)
 
 
@@ -21,7 +20,12 @@ def index():
 def posts():
     if "user_id" not in session:
         return redirect("/", 302)
-    return render_template("index.html")
+    posts = []
+    for row in PostRepository(DatabaseConnection()).get_posts(session["user_id"]):
+        post = Post(row[1], row[2], row[3], row[4], row[5], row[6])
+        posts.append(post)
+        print(post.title)
+    return render_template("posts.html", posts=posts)
 
 
 @app.route("/createpost", methods=["GET", "POST"])
@@ -32,9 +36,7 @@ def create_post():
         title = request.form.get("post-title")
         body = request.form.get("post-body")
         created_at = str(datetime.datetime.now())
-        post = PostController().create_post_object(
-            0, title, body, created_at, created_at
-        )
+        post = Post(session["user_id"], title, body, created_at, created_at, False)
         PostRepository(DatabaseConnection()).add_post(post)
     return render_template("createpost.html")
 

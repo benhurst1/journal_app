@@ -1,6 +1,7 @@
 <nav>
-  <a href=""><button>Home</button></a>
+  <a href="/"><button>Home</button></a>
   {% if 'user_id' in session %}
+  <a href="createpost"><button>Create post</button></a>
   <a href="posts"><button>Posts</button></a>
   <a href="logout"><button>Log out</button></a>
   {% else %}
