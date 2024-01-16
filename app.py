@@ -76,11 +76,14 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        user = User(username, password)
-        user_id = UserRespository(DatabaseConnection()).check_user(user)
-        if user_id != None:
-            session["user_id"] = user_id
+        temp_user = User(username, password)
+        user_details = UserRespository(DatabaseConnection()).check_user(temp_user)
+        if user_details != None:
+            session["user_id"] = user_details[0]
+            session["username"] = user_details[1]
+            session["email"] = user_details[2]
             return redirect("/")
+
     return render_template("login.html")
 
 
@@ -88,6 +91,23 @@ def login():
 def logout():
     session.pop("user_id", default=None)
     return redirect("/")
+
+
+@app.route("/account", methods=["GET"])
+def account():
+    if "user_id" not in session:
+        return redirect("/", 302)
+
+    return render_template("account.html")
+
+
+@app.route("/changepassword", methods=["POST"])
+def change_password():
+    current_password = request.form.get("currentpass")
+    new_password = request.form.get("newpass")
+    user = User(session["username"], current_password, None, session["user_id"])
+    UserRespository(DatabaseConnection()).change_password(user, new_password)
+    return redirect("/account")
 
 
 if __name__ == "__main__":

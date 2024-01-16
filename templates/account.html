@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% include '_navbar.html' %} {% if 'user_id' in session %}
+    <p>Welcome to your account area {{ session['username'] }}</p>
+    <form action="/changepassword" method="post">
+      <label
+        >Current password<input type="password" name="currentpass" />
+      </label>
+      <label>New password<input type="password" name="newpass" /></label>
+
+      <input type="submit" value="Submit" />
+    </form>
+    {% endif %}
+  </body>
+</html>
