@@ -24,8 +24,6 @@ def index():
 def posts():
     if "user_id" not in session:
         return redirect("/", 302)
-    if request.method == "POST":
-        pass
     posts = []
     for row in PostRepository(DatabaseConnection()).get_posts(session["user_id"]):
         post = Post(row[1], row[2], row[3], row[4], row[5], row[6], row[0])

@@ -2,8 +2,14 @@
   <h3>{{post.post_id, post.title}}</h3>
   <p>{{post.body}}</p>
   <p>created: {{post.created_at}}</p>
+  {% if url_for(request.endpoint) == '/posts' %}
   <form action="/publish" method="post">
     <input type="hidden" name="post-id" value="{{post.post_id}}" />
-    <input type="submit" value="Publish" />
+    {% if post.published == True %}
+    <input type="submit" name="submit" value="Unpublish" />
+    {% else %}
+    <input type="submit" name="submit" value="Publish" />
+    {% endif %}
   </form>
+  {% endif %}
 </div>

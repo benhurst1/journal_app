@@ -29,5 +29,5 @@ class PostRepository:
 
     def publish(self, post_id):
         self._connection.execute(
-            """UPDATE posts SET published = True WHERE id = %s""", [post_id]
+            """UPDATE posts SET published = NOT published WHERE id = %s""", [post_id]
         )
