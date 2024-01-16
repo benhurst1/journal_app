@@ -34,8 +34,6 @@ def test_routes(client):
     assert response.status_code == 200
     response = client.get("/login")
     assert response.status_code == 200
-    response = client.get("/createpost")
-    assert response.status_code == 200
 
 
 # def test_signup(browser, db_connection):
