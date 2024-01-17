@@ -110,5 +110,13 @@ def change_password():
     return redirect("/account")
 
 
+@app.route("/deleteaccount", methods=["POST"])
+def deleteaccount():
+    PostRepository(DatabaseConnection()).delete_all(session["user_id"])
+    UserRespository(DatabaseConnection()).delete_account(session["user_id"])
+    session.pop("user_id", default=None)
+    return redirect("/")
+
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

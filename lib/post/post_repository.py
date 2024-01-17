@@ -32,3 +32,6 @@ class PostRepository:
         self._connection.execute(
             """UPDATE posts SET published = NOT published WHERE id = %s""", [post_id]
         )
+
+    def delete_all(self, user_id):
+        self._connection.execute("""DELETE FROM posts WHERE user_id = %s""", [user_id])

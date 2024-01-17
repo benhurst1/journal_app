@@ -23,3 +23,6 @@ class UserRespository:
             """UPDATE users SET password = %s WHERE id = %s AND username = %s AND password = %s""",
             [new_password, user.id, user.username, user.password],
         )
+
+    def delete_account(self, user_id):
+        self._connection.execute("""DELETE FROM users WHERE id = %s""", [user_id])
