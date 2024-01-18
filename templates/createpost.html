@@ -7,10 +7,34 @@
   </head>
   <body>
     {% include '_navbar.html' %}
+
     <form method="post">
+      {% if edit == True and post == None %}
       <input type="text" id="post-title" name="post-title" />
       <input type="textarea" id="post-body" name="post-body" />
       <input type="submit" value="Save" />
+      {% elif edit == True and post != None %}
+      <input
+        type="text"
+        id="post-title"
+        name="post-title"
+        value="{{post.title}}"
+      />
+      <input
+        type="textarea"
+        id="post-body"
+        name="post-body"
+        value="{{post.body}}"
+      />
+      <input type="submit" value="Save" />
+      <p>{{ post.title }}</p>
+      <p>{{ post.body }}</p>
+      <input type="hidden" name="created-at" value="{{ post.created_at }}" />
+      <input type="hidden" name="post-id" value="{{ post.id }}" />
+      <input type="hidden" name="post-title" value="{{ post.title }}" />
+      <input type="hidden" name="post-body" value="{{ post.body }}" />
+      <input type="submit" value="Edit" />
+      {% endif %}
     </form>
   </body>
 </html>

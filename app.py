@@ -43,17 +43,33 @@ def create_post():
             session["user_id"], title, body, created_at, created_at, False, None
         )
         PostRepository(DatabaseConnection()).add_post(post)
-    return render_template("createpost.html")
+        return render_template("createpost.html", edit=False, post=post)
+    return render_template("createpost.html", edit=True, post=None)
 
 
-@app.route("/publish", methods=["GET", "POST"])
+@app.route("/view", methods=["GET", 'POST'])
+def view():
+    post_id = request.form.get("post-id")
+    row = PostRepository(DatabaseConnection()).get_post(post_id)
+    post = Post(row[1], row[2], row[3], row[4], row[5], row[6], row[0])
+    return render_template("view_post.html", post=post)
+
+
+@app.route("/edit", methods=["GET", "POST"])
 def publish():
     if "user_id" not in session:
         return redirect("/", 302)
     if request.method == "POST":
+        choice = request.form.get("submit")
         post_id = request.form.get("post-id")
-        PostRepository(DatabaseConnection()).publish(post_id)
-    return redirect("/posts")
+        if choice == "Publish" or choice == "Unpublish":
+            PostRepository(DatabaseConnection()).publish(post_id)
+            return redirect("/posts")
+        elif choice == "Delete":
+            PostRepository(DatabaseConnection()).delete_one(post_id)
+            return redirect("/posts")
+        # elif choice == 'View':
+        #     PostRepository
 
 
 @app.route("/signup", methods=["GET", "POST"])

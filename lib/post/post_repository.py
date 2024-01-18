@@ -15,6 +15,18 @@ class PostRepository:
             ],
         )
 
+    def update_post(self, post):
+        self._connection.execute(
+            """UPDATE posts SET title = %s, body = %s, edited_at = %s""",
+            [post.title, post.body, post.edited_at],
+        )
+
+    def get_post(self, post_id):
+        row = self._connection.execute(
+            """SELECT * FROM posts WHERE id = %s""", [post_id]
+        )
+        return row[0]
+
     def get_posts(self, user_id):
         posts = self._connection.execute(
             """SELECT * FROM posts WHERE user_id = %s ORDER BY created_at DESC""",
@@ -32,6 +44,9 @@ class PostRepository:
         self._connection.execute(
             """UPDATE posts SET published = NOT published WHERE id = %s""", [post_id]
         )
+
+    def delete_one(self, post_id):
+        self._connection.execute("""DELETE FROM posts WHERE id = %s""", [post_id])
 
     def delete_all(self, user_id):
         self._connection.execute("""DELETE FROM posts WHERE user_id = %s""", [user_id])
