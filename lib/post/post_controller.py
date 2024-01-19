@@ -21,11 +21,19 @@ class PostController:
         post = Post(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
         return post
 
+    def update_post(self, post_id, user_id, title, body, edited_at):
+        rows = self._connection.execute(
+            """UPDATE posts SET title = %s, body = %s, last_edited = %s WHERE id = %s AND user_id = %s RETURNING *""",
+            [title, body, edited_at, post_id, user_id],
+        )
+        if len(rows) == 1:
+            row = rows[0]
+            return Post(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
+
     def get_one_post(self, post_id):
         rows = self._connection.execute(
             """SELECT * FROM posts WHERE id = %s""", [post_id]
         )
-        print(rows)
         if len(rows) == 1:
             row = rows[0]
             return Post(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
@@ -55,6 +63,9 @@ class PostController:
         self._connection.execute(
             """UPDATE posts SET published = NOT published WHERE id = %s""", [post_id]
         )
+
+    def delete_one(self, post_id):
+        self._connection.execute("""DELETE FROM posts WHERE id=%s""", [post_id])
 
     def delete_all(self, user_id):
         self._connection.execute("""DELETE FROM posts WHERE user_id = %s""", [user_id])
