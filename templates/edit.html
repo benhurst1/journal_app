@@ -3,14 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <title>Edit a post</title>
+    <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
   </head>
   <body>
     {% include '_navbar.html' %}
-    <form action="createpost" method="post">
+    <form action="createpost" method="post" id="edit-post" class="post-create">
       <input type="hidden" name="post-id" value="{{post_id}}" />
-      <input type="text" name="post-title" value="{{title}}" />
-      <input type="textarea" name="post-body" value="{{body}}" />
+      <label for="post-title">Title</label>
+      <input
+        type="text"
+        id="edit-post-title"
+        class="input-post-title"
+        name="post-title"
+        value="{{title}}"
+      />
+      <label for="post-body">Body</label>
+      <textarea
+        name="post-body"
+        form="create-post"
+        id="edit-post-body"
+        class="input-post-body"
+        cols="40"
+        rows="40"
+        value="{{body}}"
+      ></textarea>
       <input type="submit" name="submit" value="Update" />
     </form>
   </body>

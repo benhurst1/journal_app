@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <title>{{post.title}}</title>
+    <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
   </head>
   <body>
     {% include '_navbar.html' %}
-    <h3>{{post.id, post.title}}</h3>
+    <h3>{{post.title}}</h3>
     <p>{{post.body}}</p>
     {% if post.user_id == session['user_id'] %}
     <form action="edit" method="post">

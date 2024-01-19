@@ -3,17 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <title>Sign up</title>
+    <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
   </head>
   <body>
     {% include '_navbar.html' %}
-    <form method="post">
+    <form method="post" class="user-form">
       <label for="username">Username</label>
-      <input id="username" name="username" type="text" />
+      <input
+        id="username"
+        name="username"
+        type="text"
+        placeholder="Enter username"
+      />
+
       <label for="email">Email</label>
-      <input id="email" type="email" name="email" />
+      <input id="email" type="email" name="email" placeholder="Enter email" />
+
       <label for="password">Password</label>
-      <input id="password" type="password" name="password" />
+      <input
+        id="password"
+        type="password"
+        name="password"
+        placeholder="Enter password"
+      />
+
       <input type="submit" value="Create" />
     </form>
   </body>

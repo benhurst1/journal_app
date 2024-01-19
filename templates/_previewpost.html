@@ -1,24 +1,26 @@
-<div>
-  <h3>{{post.id, post.title}}</h3>
+<div class="post-preview">
+  <h3>{{post.title}}</h3>
   <p>{{post.body}}</p>
   <p>created: {{post.created_at}}</p>
-  <form action="/view" method="post">
-    <input type="hidden" name="post-id" value="{{post.id}}" />
-    <input type="submit" name="submit" value="View" />
-  </form>
-  {% if url_for(request.endpoint) == '/posts' %}
-  <form action="/publish" method="post">
-    <input type="hidden" name="post-id" value="{{post.id}}" />
-    {% if post.published == True %}
-    <input type="submit" name="submit" value="Unpublish" />
-    {% else %}
-    <input type="submit" name="submit" value="Publish" />
-    {% endif %}
-  </form>
-  {% if post.published != True %}
-  <form action="/delete" method="post">
-    <input type="hidden" name="post-id" value="{{post.id}}" />
-    <input type="submit" name="submit" value="Delete" />
-  </form>
-  {% endif %} {% endif %}
+  <div class="post-preview-buttons">
+    <form action="/view" method="post">
+      <input type="hidden" name="post-id" value="{{post.id}}" />
+      <input type="submit" name="submit" value="View" />
+    </form>
+    {% if url_for(request.endpoint) == '/posts' %}
+    <form action="/publish" method="post">
+      <input type="hidden" name="post-id" value="{{post.id}}" />
+      {% if post.published == True %}
+      <input type="submit" name="submit" value="Unpublish" />
+      {% else %}
+      <input type="submit" name="submit" value="Publish" />
+      {% endif %}
+    </form>
+    {% if post.published != True %}
+    <form action="/delete" method="post">
+      <input type="hidden" name="post-id" value="{{post.id}}" />
+      <input type="submit" name="submit" value="Delete" />
+    </form>
+    {% endif %} {% endif %}
+  </div>
 </div>

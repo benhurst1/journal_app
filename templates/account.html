@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <title>My account</title>
+    <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
   </head>
   <body>
     {% include '_navbar.html' %} {% if 'user_id' in session %}
@@ -16,6 +18,7 @@
 
       <input type="submit" value="Submit" />
     </form>
+    <a href="logout">Log out</a>
     <form action="/deleteaccount" method="post">
       You literally just have to press this button and your account and all
       posts will be deleted.
