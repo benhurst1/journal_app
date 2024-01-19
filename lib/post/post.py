@@ -1,15 +1,8 @@
 class Post:
     def __init__(
-        self,
-        user_id: int,
-        title,
-        body,
-        created_at,
-        last_edited,
-        published,
-        post_id=None,
+        self, id, user_id: int, title, body, created_at, last_edited, published
     ):
-        self.post_id = post_id
+        self.id = id
         self.user_id = user_id
         self.title = title
         self.body = body

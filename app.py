@@ -1,10 +1,8 @@
 from flask import Flask, request, render_template, session, redirect
 from lib.db_connection import DatabaseConnection
-from lib.user.user_repository import UserRespository
+from lib.user.user_controller import UserController
 from lib.user.user import User
-from lib.post.post import Post
-from lib.post.post_repository import PostRepository
-import psycopg2
+from lib.post.post_controller import PostController
 import datetime, secrets
 
 app = Flask(__name__)
@@ -13,10 +11,7 @@ app.secret_key = secrets.token_urlsafe(32)
 
 @app.route("/", methods=["GET"])
 def index():
-    posts = []
-    for row in PostRepository(DatabaseConnection()).get_published():
-        post = Post(row[1], row[2], row[3], row[4], row[5], row[6], row[0])
-        posts.append(post)
+    posts = PostController(DatabaseConnection()).get_published()
     return render_template("index.html", session=session, posts=posts)
 
 
@@ -24,10 +19,7 @@ def index():
 def posts():
     if "user_id" not in session:
         return redirect("/", 302)
-    posts = []
-    for row in PostRepository(DatabaseConnection()).get_posts(session["user_id"]):
-        post = Post(row[1], row[2], row[3], row[4], row[5], row[6], row[0])
-        posts.append(post)
+    posts = PostController(DatabaseConnection()).get_posts(session["user_id"])
     return render_template("posts.html", posts=posts)
 
 
@@ -39,11 +31,23 @@ def create_post():
         title = request.form.get("post-title")
         body = request.form.get("post-body")
         created_at = str(datetime.datetime.now())
-        post = Post(
-            session["user_id"], title, body, created_at, created_at, False, None
+        post = PostController(DatabaseConnection()).add_post(
+            session["user_id"], title, body, created_at
         )
-        PostRepository(DatabaseConnection()).add_post(post)
+        session["post_id"] = post.id
+        return redirect("/view")
     return render_template("createpost.html")
+
+
+@app.route("/view", methods=["GET", "POST"])
+def view_post():
+    if "post_id" not in session:
+        post = PostController(DatabaseConnection()).get_one_post(
+            request.form.get("post-id")
+        )
+    else:
+        post = PostController(DatabaseConnection()).get_one_post(session["post_id"])
+    return render_template("viewpost.html", post=post)
 
 
 @app.route("/publish", methods=["GET", "POST"])
@@ -52,7 +56,7 @@ def publish():
         return redirect("/", 302)
     if request.method == "POST":
         post_id = request.form.get("post-id")
-        PostRepository(DatabaseConnection()).publish(post_id)
+        PostController(DatabaseConnection()).publish(post_id)
     return redirect("/posts")
 
 
@@ -64,8 +68,7 @@ def signup():
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
-        user = User(username, password, email)
-        UserRespository(DatabaseConnection()).add_user(user)
+        UserController(DatabaseConnection()).add_user(username, password, email)
     return render_template("signup.html")
 
 
@@ -76,20 +79,18 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        temp_user = User(username, password)
-        user_details = UserRespository(DatabaseConnection()).check_user(temp_user)
-        if user_details != None:
-            session["user_id"] = user_details[0]
-            session["username"] = user_details[1]
-            session["email"] = user_details[2]
+        user = UserController(DatabaseConnection()).check_user(username, password)
+        if user != None:
+            session["username"] = user.username
+            session["user_id"] = user.id
             return redirect("/")
-
     return render_template("login.html")
 
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     session.pop("user_id", default=None)
+    session.pop("username", default=None)
     return redirect("/")
 
 
@@ -105,15 +106,16 @@ def account():
 def change_password():
     current_password = request.form.get("currentpass")
     new_password = request.form.get("newpass")
-    user = User(session["username"], current_password, None, session["user_id"])
-    UserRespository(DatabaseConnection()).change_password(user, new_password)
+    UserController(DatabaseConnection()).change_password(
+        session["user_id"], current_password, new_password
+    )
     return redirect("/account")
 
 
 @app.route("/deleteaccount", methods=["POST"])
 def deleteaccount():
-    PostRepository(DatabaseConnection()).delete_all(session["user_id"])
-    UserRespository(DatabaseConnection()).delete_account(session["user_id"])
+    PostController(DatabaseConnection()).delete_all(session["user_id"])
+    UserController(DatabaseConnection()).delete_account(session["username"])
     session.pop("user_id", default=None)
     return redirect("/")
 
