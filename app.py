@@ -3,6 +3,7 @@ from lib.db_connection import DatabaseConnection
 from lib.user.user_controller import UserController
 from lib.user.user import User
 from lib.post.post_controller import PostController
+from hashlib import sha256
 import datetime, secrets
 
 app = Flask(__name__)
@@ -79,7 +80,7 @@ def signup():
     if request.method == "POST":
         username = request.form.get("username")
         email = request.form.get("email")
-        password = request.form.get("password")
+        password = sha256(request.form.get("password").encode("utf-8")).hexdigest()
         UserController(DatabaseConnection()).add_user(username, password, email)
     return render_template("signup.html")
 
@@ -90,7 +91,7 @@ def login():
         return redirect("/")
     if request.method == "POST":
         username = request.form.get("username")
-        password = request.form.get("password")
+        password = sha256(request.form.get("password").encode("utf-8")).hexdigest()
         user = UserController(DatabaseConnection()).check_user(username, password)
         if user != None:
             session["username"] = user.username
