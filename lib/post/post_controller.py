@@ -5,7 +5,7 @@ class PostController:
     def __init__(self, connection):
         self._connection = connection
 
-    def add_post(self, user_id, title, body, created_at, id=None):
+    def add_post(self, user_id, title, body, created_at, id):
         if id == None:
             rows = self._connection.execute(
                 """INSERT INTO posts (user_id, title, body, created_at, last_edited, published) VALUES(%s, %s, %s, %s, %s, %s) RETURNING *""",

@@ -8,18 +8,24 @@
     <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
   </head>
   <body>
-    {% include '_navbar.html' %} {% if 'user_id' in session %}
-    <p>Welcome to your account area {{ session['username'] }}</p>
-    <form action="/changepassword" method="post">
-      <label
-        >Current password<input type="password" name="currentpass" />
-      </label>
-      <label>New password<input type="password" name="newpass" /></label>
-
-      <input type="submit" value="Submit" />
-    </form>
-    <a href="logout">Log out</a>
-    <a href="deleteaccount">Delete Account</a>
-    {% endif %}
+    {% include '_navbar.html' %}
+    <div id="account-container">
+      {% if 'user_id' in session %}
+      <p>Welcome to your account area {{ session['username'] }}</p>
+      <form action="/changepassword" method="post" class="user-form">
+        <label>Current password </label>
+        <input
+          type="password"
+          name="currentpass"
+          placeholder="Current password"
+        />
+        <label>New password</label>
+        <input type="password" name="newpass" placeholder="New password" />
+        <input type="submit" value="Change password" />
+      </form>
+      <a href="logout">Log out</a>
+      <a href="deleteaccount">Delete Account</a>
+      {% endif %}
+    </div>
   </body>
 </html>

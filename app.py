@@ -34,7 +34,9 @@ def create_post():
                 post = PostController(DatabaseConnection()).get_one_post(post_id)
                 return render_template("createpost.html", post=post)
         if request.method == "POST":
-            post_id = request.args["id"]
+            post_id = None
+            if request.form.get("post-id") != "":
+                post_id = request.form.get("post-id")
             title = request.form.get("post-title")
             body = request.form.get("post-body")
             created_at = str(datetime.datetime.now())
