@@ -53,7 +53,7 @@ def view_post():
     if post.published == True or session["user_id"] == post.user_id:
         return render_template("viewpost.html", post=post)
     else:
-        return redirect("/", 404)
+        return redirect("/")
 
 
 @app.route("/publish", methods=["GET", "POST"])
@@ -87,7 +87,7 @@ def signup():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if "user_id" in session:
-        return redirect("/", 302)
+        return redirect("/")
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
@@ -96,7 +96,9 @@ def login():
             session["username"] = user.username
             session["user_id"] = user.id
             return redirect("/")
-    return render_template("login.html")
+        else:
+            return render_template("login.html", error=True)
+    return render_template("login.html", error=False)
 
 
 @app.route("/logout", methods=["GET", "POST"])
