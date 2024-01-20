@@ -9,12 +9,14 @@
   </head>
   <body>
     {% include '_navbar.html' %}
+
     <form
-      action="createpost"
+      action="createpost?id={{post.id}}"
       method="post"
       id="create-post"
       class="post-create"
     >
+      <input type="hidden" name="post-id" value="{{post.id}}" />
       <label for="post-title">Title</label>
       <input
         type="text"
@@ -22,6 +24,7 @@
         class="input-post-title"
         name="post-title"
         placeholder="Post title"
+        value="{{post.title}}"
       />
       <label for="post-body">Body </label>
       <textarea
@@ -32,8 +35,9 @@
         cols="40"
         rows="40"
         placeholder="Post body"
-      ></textarea>
-
+      >
+{{post.body}}</textarea
+      >
       <input type="submit" value="Save" />
     </form>
   </body>

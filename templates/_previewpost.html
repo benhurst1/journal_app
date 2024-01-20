@@ -1,27 +1,17 @@
 <div class="post-preview">
   <h3>{{post.title}}</h3>
   {% if post.created_at != post.edited_at %} {{post.edited_at}} {% endif %}
-  <p>{{post.body}}</p>
-  <p>created: {{post.created_at}}</p>
+  <p>{{post.body[:100]}}</p>
+  <p>Created: {{post.created_at.strftime("%H:%M - %d/%m/%y")}}</p>
   <div class="post-preview-buttons">
-    <form action="/view" method="post">
-      <input type="hidden" name="post-id" value="{{post.id}}" />
-      <input type="submit" name="submit" value="View" />
-    </form>
+    <a href="view?id={{post.id}}">View</a>
     {% if url_for(request.endpoint) == '/posts' %}
-    <form action="/publish" method="post">
-      <input type="hidden" name="post-id" value="{{post.id}}" />
-      {% if post.published == True %}
-      <input type="submit" name="submit" value="Unpublish" />
-      {% else %}
-      <input type="submit" name="submit" value="Publish" />
-      {% endif %}
-    </form>
+
+    <a href="publish?id={{post.id}}"
+      >{% if post.published == True %}Unpublish{% else %}Publish{% endif %}</a
+    >
     {% if post.published != True %}
-    <form action="/delete" method="post">
-      <input type="hidden" name="post-id" value="{{post.id}}" />
-      <input type="submit" name="submit" value="Delete" />
-    </form>
+    <a href="delete?id={{post.id}}">Delete</a>
     {% endif %} {% endif %}
   </div>
 </div>

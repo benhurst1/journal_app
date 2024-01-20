@@ -25,53 +25,39 @@ def posts():
 
 @app.route("/createpost", methods=["GET", "POST"])
 def create_post():
-    if "user_id" not in session:
-        return redirect("/", 302)
-    if request.method == "POST":
-        title = request.form.get("post-title")
-        body = request.form.get("post-body")
-        if request.form.get("submit") == "Update":
-            post_id = request.form.get("post-id")
-            edited_at = str(datetime.datetime.now())
-            post = PostController(DatabaseConnection()).update_post(
-                post_id, session["user_id"], title, body, edited_at
-            )
-        else:
+    if "user_id" in session:
+        if request.method == "GET":
+            if "id" not in request.args:
+                return render_template("createpost.html", post=None)
+            else:
+                post_id = request.args["id"]
+                post = PostController(DatabaseConnection()).get_one_post(post_id)
+                return render_template("createpost.html", post=post)
+        if request.method == "POST":
+            post_id = request.args["id"]
+            title = request.form.get("post-title")
+            body = request.form.get("post-body")
             created_at = str(datetime.datetime.now())
             post = PostController(DatabaseConnection()).add_post(
-                session["user_id"], title, body, created_at
+                session["user_id"], title, body, created_at, post_id
             )
-        session["post_id"] = post.id
-        return redirect("/view")
-    return render_template("createpost.html")
+    return redirect("/", 302)
 
 
 @app.route("/view", methods=["GET", "POST"])
 def view_post():
-    if "post_id" not in session:
-        post = PostController(DatabaseConnection()).get_one_post(
-            request.form.get("post-id")
-        )
+    post_id = request.args["id"]
+    post = PostController(DatabaseConnection()).get_one_post(post_id)
+    if post.published == True or session["user_id"] == post.user_id:
+        return render_template("viewpost.html", post=post)
     else:
-        post = PostController(DatabaseConnection()).get_one_post(session["post_id"])
-        session.pop("post_id", default=None)
-    return render_template("viewpost.html", post=post)
-
-
-@app.route("/edit", methods=["GET", "POST"])
-def edit_post():
-    post_id = request.form.get("post-id")
-    title = request.form.get("post-title")
-    body = request.form.get("post-body")
-    return render_template("edit.html", post_id=post_id, title=title, body=body)
+        return redirect("/", 404)
 
 
 @app.route("/publish", methods=["GET", "POST"])
 def publish():
-    if "user_id" not in session:
-        return redirect("/", 302)
-    if request.method == "POST":
-        post_id = request.form.get("post-id")
+    if "user_id" in session:
+        post_id = request.args["id"]
         PostController(DatabaseConnection()).publish(post_id)
     return redirect("/posts")
 
@@ -79,7 +65,7 @@ def publish():
 @app.route("/delete", methods=["GET", "POST"])
 def delete_post():
     if "user_id" in session:
-        post_id = request.form.get("post-id")
+        post_id = request.args("id")
         PostController(DatabaseConnection()).delete_one(post_id)
     return redirect("/posts")
 
@@ -136,7 +122,7 @@ def change_password():
     return redirect("/account")
 
 
-@app.route("/deleteaccount", methods=["POST"])
+@app.route("/deleteaccount", methods=["GET"])
 def deleteaccount():
     PostController(DatabaseConnection()).delete_all(session["user_id"])
     UserController(DatabaseConnection()).delete_account(session["username"])

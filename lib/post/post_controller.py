@@ -5,30 +5,27 @@ class PostController:
     def __init__(self, connection):
         self._connection = connection
 
-    def add_post(self, user_id, title, body, created_at):
-        rows = self._connection.execute(
-            """INSERT INTO posts (user_id, title, body, created_at, last_edited, published) VALUES(%s, %s, %s, %s, %s, %s) RETURNING *""",
-            [
-                user_id,
-                title,
-                body,
-                created_at,
-                created_at,
-                False,
-            ],
-        )
+    def add_post(self, user_id, title, body, created_at, id=None):
+        if id == None:
+            rows = self._connection.execute(
+                """INSERT INTO posts (user_id, title, body, created_at, last_edited, published) VALUES(%s, %s, %s, %s, %s, %s) RETURNING *""",
+                [
+                    user_id,
+                    title,
+                    body,
+                    created_at,
+                    created_at,
+                    False,
+                ],
+            )
+        else:
+            rows = self._connection.execute(
+                """UPDATE posts SET title = %s, body = %s, last_edited = %s WHERE id = %s and user_id = %s RETURNING *""",
+                [title, body, created_at, id, user_id],
+            )
         row = rows[0]
         post = Post(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
         return post
-
-    def update_post(self, post_id, user_id, title, body, edited_at):
-        rows = self._connection.execute(
-            """UPDATE posts SET title = %s, body = %s, last_edited = %s WHERE id = %s AND user_id = %s RETURNING *""",
-            [title, body, edited_at, post_id, user_id],
-        )
-        if len(rows) == 1:
-            row = rows[0]
-            return Post(row[0], row[1], row[2], row[3], row[4], row[5], row[6])
 
     def get_one_post(self, post_id):
         rows = self._connection.execute(

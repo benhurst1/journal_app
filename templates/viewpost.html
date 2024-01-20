@@ -10,15 +10,13 @@
   <body>
     {% include '_navbar.html' %}
     <h3>{{post.title}}</h3>
+    {% if post.last_edited != post.created_at %}
+    <p>Last edited: {{post.last_edited.strftime("%H:%M - %d/%m/%y")}}</p>
+    {% endif %}
     <p>{{post.body}}</p>
-    {% if post.user_id == session['user_id'] %}
-    <form action="edit" method="post">
-      <input type="hidden" name="post-id" value="{{post.id}}" />
-      <input type="hidden" name="post-title" value="{{post.title}}" />
-      <input type="hidden" name="post-body" value="{{post.body}}" />
-      <input type="hidden" name="post-created-at" value="{{post.created_at}}" />
-      <input type="submit" name="submit" value="Edit" />
-    </form>
+    <p>Created: {{post.created_at.strftime("%H:%M - %d/%m/%y")}}</p>
+    {% if post.user_id == session['user_id'] and post.published == False %}
+    <a href="createpost?id={{post.id}}">Edit</a>
     {% endif %}
   </body>
 </html>
