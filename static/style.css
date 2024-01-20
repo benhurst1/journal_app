@@ -2,23 +2,47 @@
   margin: 0;
 }
 
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 nav {
   display: flex;
   justify-content: center;
   flex-direction: row;
   gap: 10px;
-  background-color: pink;
+  background-color: lightblue;
 }
 
 nav a {
-  padding: 40px 0px;
+  padding: 20px 0px;
   width: 80px;
   font-size: 14px;
   text-align: center;
 }
 
 nav a:hover {
-  background-color: grey;
+  background-color: rgb(150, 189, 201);
+}
+
+footer {
+  background-color: lightblue;
+  margin-top: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+footer a {
+  padding: 15px 0px;
+  width: 80px;
+  text-align: center;
+}
+
+footer a:hover {
+  background-color: rgb(150, 189, 201);
 }
 
 .user-form {
@@ -58,27 +82,47 @@ label {
   margin-top: 50px;
   display: flex;
   width: 100%;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 30px;
 }
 
 .post-preview {
   display: flex;
-  width: 200px;
-  height: 200px;
+  width: 400px;
+  height: 100px;
   flex-direction: column;
-  background-color: pink;
+  background-color: lightblue;
   justify-content: space-between;
-  padding: 10px 5px 0px 5px;
+
   gap: 10px;
+}
+
+.post-preview-main {
+  padding: 10px 5px 0px 5px;
+}
+
+.post-preview-footer {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(214, 221, 228);
+  padding: 0px 5px 0px 5px;
 }
 
 .post-preview-buttons {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.post-preview-buttons a,
+p {
+  padding: 5px;
+}
+
+.post-preview-buttons a:hover {
+  background-color: rgb(195, 201, 208);
 }
 
 .post-view-container {

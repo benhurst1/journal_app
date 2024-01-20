@@ -67,7 +67,7 @@ def publish():
 @app.route("/delete", methods=["GET", "POST"])
 def delete_post():
     if "user_id" in session:
-        post_id = request.args("id")
+        post_id = request.args["id"]
         PostController(DatabaseConnection()).delete_one(post_id)
     return redirect("/posts")
 

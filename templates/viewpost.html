@@ -12,13 +12,18 @@
     <div class="post-view-container">
       <h3 class="post-title">{{post.title}}</h3>
       {% if post.last_edited != post.created_at %}
-      <p class="post-edited">Last edited: {{post.last_edited.strftime("%H:%M - %d/%m/%y")}}</p>
+      <p class="post-edited">
+        Last edited: {{post.last_edited.strftime("%H:%M - %d/%m/%y")}}
+      </p>
       {% endif %}
       <p class="post-body">{{post.body}}</p>
-      <p class="post-created">Created: {{post.created_at.strftime("%H:%M - %d/%m/%y")}}</p>
+      <p class="post-created">
+        Created: {{post.created_at.strftime("%H:%M - %d/%m/%y")}}
+      </p>
       {% if post.user_id == session['user_id'] and post.published == False %}
       <a href="createpost?id={{post.id}}">Edit</a>
       {% endif %}
     </div>
+    {% include '_footer.html' %}
   </body>
 </html>
