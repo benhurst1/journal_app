@@ -54,6 +54,7 @@ def view_post():
         )
     else:
         post = PostController(DatabaseConnection()).get_one_post(session["post_id"])
+        session.pop("post_id", default=None)
     return render_template("viewpost.html", post=post)
 
 
