@@ -1,4 +1,3 @@
-from lib.user.user import User
 import bcrypt, re
 
 
@@ -25,8 +24,7 @@ class UserController:
                 [username],
             )
             if len(rows) == 1:
-                user = User(rows[0][0], rows[0][1], rows[0][2], rows[0][3])
-                return user
+                return {"username": rows[0][0], "user_id": rows[0][1]}
         return None
 
     def change_password(self, username, password, new_password):

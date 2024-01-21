@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, session, redirect
 from lib.db_connection import DatabaseConnection
 from lib.user.user_controller import UserController
-from lib.user.user import User
 from lib.post.post_controller import PostController
 from hashlib import sha256
 import bcrypt
@@ -101,8 +100,8 @@ def login():
         password = request.form.get("password")
         user = UserController(DatabaseConnection()).auth_user(username, password)
         if user != None:
-            session["username"] = user.username
-            session["user_id"] = user.id
+            session["username"] = user["username"]
+            session["user_id"] = user["user_id"]
             return redirect("/")
         else:
             return render_template("login.html", error=True)
