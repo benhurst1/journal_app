@@ -33,6 +33,8 @@
     </form>
     {% if error == True %}
     <p>User or email already exists</p>
+    <p>Username: Only a-z, 0-9 and _ allowed</p>
+    <p>Password: Min 8 chars, one letter, one number and one special char</p>
     {% endif %} {% include '_footer.html' %}
   </body>
 </html>
