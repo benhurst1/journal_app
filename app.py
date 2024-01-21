@@ -4,6 +4,7 @@ from lib.user.user_controller import UserController
 from lib.user.user import User
 from lib.post.post_controller import PostController
 from hashlib import sha256
+import bcrypt
 import datetime, secrets
 
 app = Flask(__name__)
@@ -80,7 +81,7 @@ def signup():
     if request.method == "POST":
         username = request.form.get("username")
         email = request.form.get("email")
-        password = sha256(request.form.get("password").encode("utf-8")).hexdigest()
+        password = request.form.get("password")
         UserController(DatabaseConnection()).add_user(username, password, email)
     return render_template("signup.html")
 
@@ -91,8 +92,8 @@ def login():
         return redirect("/")
     if request.method == "POST":
         username = request.form.get("username")
-        password = sha256(request.form.get("password").encode("utf-8")).hexdigest()
-        user = UserController(DatabaseConnection()).check_user(username, password)
+        password = request.form.get("password")
+        user = UserController(DatabaseConnection()).auth_user(username, password)
         if user != None:
             session["username"] = user.username
             session["user_id"] = user.id
@@ -122,7 +123,7 @@ def change_password():
     current_password = request.form.get("currentpass")
     new_password = request.form.get("newpass")
     UserController(DatabaseConnection()).change_password(
-        session["user_id"], current_password, new_password
+        session["username"], current_password, new_password
     )
     return redirect("/account")
 

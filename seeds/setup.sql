@@ -4,7 +4,7 @@ CREATE TABLE "users" (
   "id" SERIAL PRIMARY KEY,
   "username" varchar(20),
   "email" varchar(50),
-  "password" varchar(30)
+  "password" BYTEA
 );
 
 CREATE TABLE "posts" (
