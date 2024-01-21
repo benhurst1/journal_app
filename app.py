@@ -82,7 +82,13 @@ def signup():
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
-        UserController(DatabaseConnection()).add_user(username, password, email)
+        if (
+            UserController(DatabaseConnection()).add_user(username, password, email)
+            == True
+        ):
+            return redirect("/login")
+        else:
+            return render_template("signup.html", error=True)
     return render_template("signup.html")
 
 

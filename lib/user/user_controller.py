@@ -8,10 +8,13 @@ class UserController:
 
     def add_user(self, username, password, email):
         hashed = self._hash_password(password)
-        self._connection.execute(
-            """INSERT INTO users (username, email, password) VALUES (%s, %s, %s)""",
+        rows = self._connection.execute(
+            """INSERT INTO users (username, email, password) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING RETURNING id """,
             [username, email, hashed],
         )
+        if len(rows) == 1:
+            return True
+        return False
 
     def auth_user(self, username, password):
         if self._check_password(username, password):
