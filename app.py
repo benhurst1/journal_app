@@ -99,6 +99,7 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         user = UserController(DatabaseConnection()).auth_user(username, password)
+        print(user)
         if user != None:
             session["username"] = user["username"]
             session["user_id"] = user["user_id"]

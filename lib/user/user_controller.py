@@ -24,7 +24,7 @@ class UserController:
                 [username],
             )
             if len(rows) == 1:
-                return {"username": rows[0][0], "user_id": rows[0][1]}
+                return {"user_id": rows[0][0], "username": rows[0][1]}
         return None
 
     def change_password(self, username, password, new_password):
@@ -43,13 +43,13 @@ class UserController:
         )
 
     def _check_username(self, username):
-        if re.match(r"^[A-Za-z0-9_]+$", username):
+        if re.match(r"^(?!_)(?!.*_$)[a-zA-Z0-9_]{3,16}$", username):
             return True
         return False
 
     def _check_password_min_req(self, input_password):
         if re.match(
-            r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$",
+            r"^(?!.*(.)\1\1)(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()-_+=])[A-Za-z\d!@#$%^&*()-_+=]{8,}$",
             input_password,
         ):
             return True
