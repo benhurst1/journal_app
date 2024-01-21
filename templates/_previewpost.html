@@ -1,6 +1,7 @@
 <div class="post-preview">
   <div class="post-preview-main">
     <h3>{{post.title[:100]}}</h3>
+    <p>{{post.username}}</p>
     {% if post.created_at != post.edited_at %} {{post.edited_at}} {% endif %}
   </div>
   <div class="post-preview-footer">

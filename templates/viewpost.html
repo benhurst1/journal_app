@@ -11,6 +11,7 @@
     {% include '_navbar.html' %}
     <div class="post-view-container">
       <h3 class="post-title">{{post.title}}</h3>
+      <p>{{post.username}}</p>
       {% if post.last_edited != post.created_at %}
       <p class="post-edited">
         Last edited: {{post.last_edited.strftime("%H:%M - %d/%m/%y")}}

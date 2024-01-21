@@ -44,7 +44,8 @@ def create_post():
             post = PostController(DatabaseConnection()).add_post(
                 session["user_id"], title, body, created_at, post_id
             )
-    return redirect("/", 302)
+            return redirect("/posts")
+    return redirect("/")
 
 
 @app.route("/view", methods=["GET", "POST"])
