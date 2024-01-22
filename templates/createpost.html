@@ -25,6 +25,7 @@
         name="post-title"
         placeholder="Post title"
         value="{{post.title}}"
+        maxlength="40"
       />
       <label for="post-body">Body </label>
       <textarea
@@ -33,7 +34,7 @@
         id="create-post-body"
         class="input-post-body"
         cols="40"
-        rows="40"
+        rows="30"
         placeholder="Post body"
       >
 {{post.body}}</textarea
