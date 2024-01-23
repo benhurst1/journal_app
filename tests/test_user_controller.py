@@ -1,4 +1,3 @@
-from unittest import mock, TestCase
 from lib.user.user_controller import UserController
 import pytest, bcrypt
 from lib.db_connection import DatabaseConnection
