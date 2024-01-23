@@ -12,8 +12,7 @@ class DatabaseConnection:
 
     def connect(self):
         try:
-            print(os.environ.get("PRODUCTION"))
-            if os.environ.get("PRODUCTION") == "True":
+            if os.getenv("APP_ENV") == "PRODUCTION":
                 self.connection = psycopg2.connect(os.environ.get("DATABASE_URI"))
             self.connection = psycopg2.connect(
                 f"postgresql://localhost/{self._database_name()}"

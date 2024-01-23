@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, session, redirect
 from lib.db_connection import DatabaseConnection
 from lib.user.user_controller import UserController
 from lib.post.post_controller import PostController
-import datetime, secrets
+import datetime, secrets, os
 
 
 app = Flask(__name__)
@@ -153,4 +153,6 @@ def deleteaccount():
 
 
 if __name__ == "__main__":
+    if os.getenv("APP_ENV") == "PRODUCTION":
+        app.run(port=5000, host="0.0.0.0")
     app.run(debug=True, port=5000)
