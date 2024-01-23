@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="static/style.css" />
+    <title>{{post.title}}</title>
+    <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
+  </head>
+  <body>
+    {% include '_navbar.html' %}
+    <div class="post-view-container">
+      <div class="post-view-main">
+        <h3>{{post.title}}</h3>
+        <h4>By {{post.username}}</h4>
+        {% if post.last_edited != post.created_at %}
+        <p>Last edited: {{post.last_edited.strftime("%H:%M - %d/%m/%y")}}</p>
+        {% endif %}
+        <p class="post-body">{{post.body}}</p>
+      </div>
+      <div class="post-footer">
+        <p>Created: {{post.created_at.strftime("%H:%M - %d/%m/%y")}}</p>
+        {% if post.user_id == session['user_id'] and post.published == False %}
+        <a href="createpost?id={{post.id}}">Edit</a>
+        {% endif %}
+      </div>
+    </div>
+    {% include '_footer.html' %}
+  </body>
+</html>

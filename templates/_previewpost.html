@@ -1,0 +1,33 @@
+<div class="post-area">
+  <a href="view?id={{post.id}}"
+    ><div class="post-preview">
+      <div class="post-preview-main">
+        <h3>{{post.title[:100]}}</h3>
+        <h4>By {{post.username}}</h4>
+      </div>
+      <div class="post-preview-footer">
+        <p>Added: {{post.created_at.strftime("%H:%M - %d/%m/%y")}}</p>
+        {% if post.created_at != post.last_edited %}
+        <p>Edited: {{post.last_edited.strftime("%H:%M - %d/%m/%y")}}</p>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+  {% if url_for(request.endpoint) == '/posts' %}
+  <div class="post-preview-buttons">
+    {% if post.published == True %}
+    <a href="publish?id={{post.id}}">
+      <img src="static/imgs/eye-off-outline-custom.png" alt="eye slash" /></a
+    >{% else %}
+    <a href="publish?id={{post.id}}"
+      ><img src="static/imgs/eye-outline-custom.png" alt="eye open" />{% endif
+      %}</a
+    >
+    {% if post.published != True %}
+    <a href="delete?id={{post.id}}"
+      ><img src="static/imgs/delete-custom.png" alt=""
+    /></a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>

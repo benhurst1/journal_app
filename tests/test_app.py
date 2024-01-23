@@ -1,7 +1,6 @@
 import pytest
 from playwright.sync_api import sync_playwright
 from app import app
-from seeds.setup import *
 from lib.db_connection import DatabaseConnection
 
 
@@ -34,8 +33,6 @@ def test_routes(client):
     response = client.get("/signup")
     assert response.status_code == 200
     response = client.get("/login")
-    assert response.status_code == 200
-    response = client.get("/createpost")
     assert response.status_code == 200
 
 

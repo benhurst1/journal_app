@@ -3,9 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <title>Create a post</title>
+    <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
   </head>
   <body>
-    <p>Create post</p>
+    {% include '_navbar.html' %}
+
+    <form
+      action="createpost"
+      method="post"
+      id="create-post"
+      class="post-create"
+    >
+      <input type="hidden" name="post-id" value="{{post.id}}" />
+      <label for="post-title">Title</label>
+      <input
+        type="text"
+        id="create-post-title"
+        class="input-post-title"
+        name="post-title"
+        placeholder="Post title"
+        value="{{post.title}}"
+        maxlength="40"
+      />
+      <label for="post-body">Body </label>
+      <textarea
+        name="post-body"
+        form="create-post"
+        id="create-post-body"
+        class="input-post-body"
+        cols="40"
+        rows="30"
+        placeholder="Post body"
+      >
+{{post.body}}</textarea
+      >
+      <input type="submit" value="Save" />
+    </form>
+    {% include '_footer.html' %}
   </body>
 </html>

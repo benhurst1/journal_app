@@ -3,9 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <title>Login</title>
+    <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
   </head>
   <body>
-    <p>login</p>
+    {% include '_navbar.html' %}
+    <form method="POST" class="user-form">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        placeholder="Enter username"
+      />
+      <label for="password">Password</label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Enter password"
+      />
+
+      <input type="submit" value="Login" />
+    </form>
+    {% if error == True %}
+    <p>Username or password is not correct</p>
+    {% endif %} {% include '_footer.html' %}
   </body>
 </html>

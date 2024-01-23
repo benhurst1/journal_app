@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="static/style.css" />
+    <title>My account</title>
+    <link rel="icon" type="image/x-icon" href="static/imgs/favicon.ico" />
+  </head>
+  <body>
+    {% include '_navbar.html' %}
+    <div id="account-container">
+      {% if 'user_id' in session %}
+      <p>Welcome to your account area {{ session['username'] }}</p>
+      <form action="/changepassword" method="post" class="user-form">
+        <label>Current password </label>
+        <input
+          type="password"
+          name="currentpass"
+          placeholder="Current password"
+        />
+        <label>New password</label>
+        <input type="password" name="newpass" placeholder="New password" />
+        <input type="submit" value="Change password" />
+      </form>
+      <a href="logout">Log out</a>
+      <p>
+        <br />
+        This will fully delete your account and posts with no other warning.
+        <br />
+        Zilch, zip, gone.
+      </p>
+      <a id="delete-account-button" href="deleteaccount">Delete Account</a>
+      {% endif %}
+    </div>
+    {% include '_footer.html' %}
+  </body>
+</html>
