@@ -15,7 +15,7 @@ jobs:
         env:
           POSTGRES_DB: journal_app_test
           POSTGRES_USER: benhurst
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD:
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
