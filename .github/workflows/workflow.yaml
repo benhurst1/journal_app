@@ -31,11 +31,17 @@ jobs:
         with:
           python-version: 3.11.4
 
+      - name: Install PostgreSQL client
+        run: sudo apt-get install postgresql-client
+
       - name: Setup env
         run: |
           pip install --upgrade pip
           python3 -m venv env
           source env/bin/activate
+
+      - name: Wait for PostgreSQL to start
+        run: sleep 10
 
       - name: populate db
         run: |
