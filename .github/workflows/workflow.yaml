@@ -1,44 +1,57 @@
-name: CI Build, Test, Deploy
+# name: CI Build, Test, Deploy
 
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+# on:
+#   push:
+#     branches: ["main", "dev"]
+#   pull_request:
+#     branches: ["main"]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: journal_app_test
-        ports:
-          - 5432:5432
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     services:
+#       postgres:
+#         image: postgres:latest
+#         env:
+#           POSTGRES_HOST_AUTH_METHOD: trust
+#           POSTGRES_DB: journal_app_test
+#           POSTGRES_USER: benhurst
+#         options: >-
+#           --health-cmd pg_isready
+#           --health-interval 10s
+#           --health-timeout 5s
+#           --health-retries 5
 
-    steps:
-      - name: Check out the code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Check out the code
+#         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11.4
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11.4
+#       - name: Set up Python 3.11.4
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: 3.11.4
 
-      - name: Setup test db
-        run:
+#       - name: Install PostgreSQL client
+#         run: sudo apt-get install postgresql-client
 
-      - name: Setup env
-        run: |
-          pip install --upgrade pip
-          python3 -m venv env
-          source env/bin/activate
+#       - name: Setup env
+#         run: |
+#           pip install --upgrade pip
+#           python3 -m venv env
+#           source env/bin/activate
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+#       - name: Wait for PostgreSQL to start
+#         run: sleep 10
 
-      - name: Test with pytest
-        run: |
-          pytest
+#       - name: populate db
+#         run: |
+#           psql -h localhost -p 5432 -U benhurst -d journal_app_test < seeds/test_setup.sql
+#           psql -h localhost -p 5432 -U benhurst -d journal_app_test < seeds/setup.sql
+
+#       - name: Install dependencies
+#         run: |
+#           pip install -r requirements.txt
+
+#       - name: Test with pytest
+#         run: |
+#           pytest

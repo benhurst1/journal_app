@@ -3,19 +3,11 @@ from lib.db_connection import DatabaseConnection
 from lib.user.user_controller import UserController
 from lib.post.post_controller import PostController
 import datetime, secrets
-from config import DevelopmentConfig, TestingConfig
+
 
 app = Flask(__name__)
 app.secret_key = secrets.token_urlsafe(32)
 
-
-# def choose_database():
-#     if request.headers.get("User-Agent") == "Playwright":
-#         print("yes")
-#     print("no")
-
-
-# @app.before_request
 def connect_to_database():
     if request.headers.get("User-Agent") == "Playwright":
         print("testing")
