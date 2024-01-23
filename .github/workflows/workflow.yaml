@@ -26,9 +26,6 @@ jobs:
         with:
           python-version: 3.11.4
 
-      - name: Setup test db
-        run:
-
       - name: Setup env
         run: |
           pip install --upgrade pip
