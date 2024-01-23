@@ -14,9 +14,10 @@ class DatabaseConnection:
         try:
             if os.getenv("APP_ENV") == "PRODUCTION":
                 self.connection = psycopg2.connect(os.environ.get("DATABASE_URI"))
-            self.connection = psycopg2.connect(
-                f"postgresql://localhost/{self._database_name()}"
-            )
+            else:
+                self.connection = psycopg2.connect(
+                    f"postgresql://localhost/{self._database_name()}"
+                )
 
         except psycopg2.OperationalError:
             raise Exception(f"Could not connect to {self._database_name()}")
