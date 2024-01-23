@@ -14,6 +14,9 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_DB: journal_app_test
+          POSTGRES_USER: benhurst
+          POSTGRES_PASSWORD: ''
+          
 
     steps:
       - name: Check out the code

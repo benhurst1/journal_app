@@ -14,7 +14,16 @@ class DatabaseConnection:
             # self.connection = psycopg2.connect(
             #     f"postgresql://localhost/{self._database_name()}"
             # )
-            self.connection = psycopg2.connect(f"dbname={self._database_name()}")
+            self.connection = psycopg2.connect(
+                dbname="journal_app",
+                user="benhurst",
+                password="",
+                port=5432,
+                host="localhost",
+            )
+            # self.connection = psycopg2.connect(
+            #     f"dbname={self._database_name()} host=localhost user=postgres password=  port=5432"
+            # )
         except psycopg2.OperationalError:
             raise Exception(f"Could not connect to {self._database_name()}")
 
