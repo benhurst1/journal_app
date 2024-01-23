@@ -1,8 +1,11 @@
 import psycopg2
-from config import DevelopmentConfig, TestingConfig
 
 
 class DatabaseConnection:
+    DEV_DATABASE_NAME = "journal_app"
+    TEST_DATABASE_NAME = "journal_app_test"
+
+
     def __init__(self, test_mode=False):
         self.test_mode = test_mode
         self.connect()
@@ -27,5 +30,5 @@ class DatabaseConnection:
 
     def _database_name(self):
         if self.test_mode == True:
-            return TestingConfig.TEST_DATABASE_NAME
-        return DevelopmentConfig.DEV_DATABASE_NAME
+            return self.TEST_DATABASE_NAME
+        return self.DEV_DATABASE_NAME

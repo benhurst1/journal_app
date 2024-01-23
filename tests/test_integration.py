@@ -12,7 +12,6 @@ def db_connection():
     yield dbconn
 
 
-
 @pytest.fixture
 def page():
     with sync_playwright() as p:
