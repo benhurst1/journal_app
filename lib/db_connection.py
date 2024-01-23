@@ -5,16 +5,16 @@ class DatabaseConnection:
     DEV_DATABASE_NAME = "journal_app"
     TEST_DATABASE_NAME = "journal_app_test"
 
-
     def __init__(self, test_mode=False):
         self.test_mode = test_mode
         self.connect()
 
     def connect(self):
         try:
-            self.connection = psycopg2.connect(
-                f"postgresql://localhost/{self._database_name()}"
-            )
+            # self.connection = psycopg2.connect(
+            #     f"postgresql://localhost/{self._database_name()}"
+            # )
+            self.connection = psycopg2.connect(f"dbname={self._database_name()}")
         except psycopg2.OperationalError:
             raise Exception(f"Could not connect to {self._database_name()}")
 

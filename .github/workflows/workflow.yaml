@@ -14,8 +14,6 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_DB: journal_app_test
-        ports:
-          - 5432:5432
 
     steps:
       - name: Check out the code
