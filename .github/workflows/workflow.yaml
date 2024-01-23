@@ -13,6 +13,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
+          POSTGRES_HOST_AUTH_METHOD: trust
           POSTGRES_DB: journal_app_test
           POSTGRES_USER: benhurst
         options: >-
