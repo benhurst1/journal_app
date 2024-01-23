@@ -39,8 +39,8 @@ jobs:
 
       - name: populate db
         run: |
-          psql journal_app_test < seeds/test_setup.sql
-          psql journal_app_test < seeds/setup.sql
+          psql -h localhost -p 5432 -U benhurst -d journal_app_test < seeds/test_setup.sql
+          psql -h localhost -p 5432 -U benhurst -d journal_app_test < seeds/setup.sql
 
       - name: Install dependencies
         run: |
